@@ -1,0 +1,54 @@
+2026-02-03 22:18:32,811 [INFO] access_bridge: Opening Access DB: C:\Path\To\Your\Database.accdb
+2026-02-03 22:18:39,914 [INFO] access_bridge: Closing Access.
+2026-02-03 22:25:22,889 [INFO] root: Selected file: C:/Users/jackw/Desktop/Remote Desktop/New Microsoft Excel Worksheet.xlsx
+2026-02-03 22:25:24,771 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/Remote Desktop/New Microsoft Excel Worksheet.xlsx
+2026-02-03 22:25:25,044 [INFO] validator: Successfully loaded 1 rows and 1 columns
+2026-02-03 22:25:25,045 [WARNING] validator: Missing required columns: DeviceID, Model, EndOfLifeDate
+2026-02-03 22:25:30,238 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/Remote Desktop/New Microsoft Excel Worksheet.xlsx
+2026-02-03 22:25:30,243 [INFO] validator: Successfully loaded 1 rows and 1 columns
+2026-02-03 22:25:30,243 [WARNING] validator: Missing required columns: DeviceID, Model, EndOfLifeDate
+2026-02-07 16:01:57,979 [INFO] access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-07 16:01:59,010 [INFO] access_bridge: Checking authentication by opening linked table.
+2026-02-07 16:01:59,027 [INFO] access_bridge: Authentication successful.
+2026-02-07 16:01:59,027 [INFO] access_bridge: Test connection successful.
+2026-02-07 16:01:59,027 [INFO] access_bridge: Closing Access.
+2026-02-07 16:02:17,481 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:02:18,877 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:02:22,871 [INFO] validator: Successfully loaded 9 rows and 5 columns
+2026-02-07 16:02:22,872 [INFO] validator: Validation passed for 9 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD
+2026-02-07 16:02:26,403 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:02:26,409 [INFO] validator: Successfully loaded 9 rows and 5 columns
+2026-02-07 16:02:26,410 [INFO] validator: Validation passed for 9 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD
+2026-02-07 16:03:31,256 [INFO] root: Starting upload process.
+2026-02-07 16:03:31,256 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:03:31,262 [INFO] validator: Successfully loaded 9 rows and 5 columns
+2026-02-07 16:03:31,263 [INFO] validator: Validation passed for 9 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD
+2026-02-07 16:03:31,263 [INFO] access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-07 16:03:32,278 [INFO] access_bridge: Checking authentication by opening linked table.
+2026-02-07 16:03:32,298 [INFO] access_bridge: Authentication successful.
+2026-02-07 16:03:32,298 [INFO] access_bridge: Importing Excel into temp table 'temp_table': C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:03:32,527 [INFO] access_bridge: Successfully imported C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx into temp_table
+2026-02-07 16:03:32,527 [INFO] access_bridge: Running macro: macro_name
+2026-02-07 16:03:32,538 [INFO] access_bridge: Macro 'macro_name' completed successfully
+2026-02-07 16:03:32,539 [INFO] access_bridge: Closing Access.
+2026-02-07 16:03:32,914 [INFO] root: Upload completed successfully.
+2026-02-07 16:05:48,543 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:05:49,803 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:05:49,809 [INFO] validator: Successfully loaded 10 rows and 5 columns
+2026-02-07 16:05:49,809 [INFO] validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD
+2026-02-07 16:05:51,521 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:05:51,527 [INFO] validator: Successfully loaded 10 rows and 5 columns
+2026-02-07 16:05:51,528 [INFO] validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD
+2026-02-07 16:05:53,519 [INFO] root: Starting upload process.
+2026-02-07 16:05:53,520 [INFO] validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:05:53,527 [INFO] validator: Successfully loaded 10 rows and 5 columns
+2026-02-07 16:05:53,527 [INFO] validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD
+2026-02-07 16:05:53,527 [INFO] access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-07 16:05:54,507 [INFO] access_bridge: Checking authentication by opening linked table.
+2026-02-07 16:05:54,523 [INFO] access_bridge: Authentication successful.
+2026-02-07 16:05:54,523 [INFO] access_bridge: Importing Excel into temp table 'temp_table': C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-07 16:05:54,638 [INFO] access_bridge: Successfully imported C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx into temp_table
+2026-02-07 16:05:54,638 [INFO] access_bridge: Running macro: macro_name
+2026-02-07 16:05:54,649 [INFO] access_bridge: Macro 'macro_name' completed successfully
+2026-02-07 16:05:54,649 [INFO] access_bridge: Closing Access.
+2026-02-07 16:05:57,271 [INFO] root: Upload completed successfully.
