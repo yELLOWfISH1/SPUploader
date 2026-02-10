@@ -52,3 +52,152 @@
 2026-02-07 16:05:54,649 [INFO] access_bridge: Macro 'macro_name' completed successfully
 2026-02-07 16:05:54,649 [INFO] access_bridge: Closing Access.
 2026-02-07 16:05:57,271 [INFO] root: Upload completed successfully.
+2026-02-10 18:43:39,211 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 18:43:40,232 [INFO] src.access_bridge: Fetching preview rows from 'preview' (limit 50)
+2026-02-10 18:43:40,567 [INFO] src.access_bridge: Closing Access.
+2026-02-10 18:52:50,085 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 18:52:50,096 [ERROR] src.access_bridge: Failed to open Access database: (-2147352567, 'Exception occurred.', (0, None, 'You entered an expression that has an invalid reference to the property Visible.', 'dao360.chm', 2015567, -2146825833), None)
+2026-02-10 18:52:50,096 [ERROR] root: Preview failed: Failed to open database: (-2147352567, 'Exception occurred.', (0, None, 'You entered an expression that has an invalid reference to the property Visible.', 'dao360.chm', 2015567, -2146825833), None)
+2026-02-10 18:53:00,567 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 18:53:01,544 [INFO] src.access_bridge: Fetching preview rows from 'preview_delete' (limit 50)
+2026-02-10 18:53:01,599 [INFO] src.access_bridge: Closing Access.
+2026-02-10 18:53:18,092 [INFO] root: Starting macro action: Delete All
+2026-02-10 18:53:18,093 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 18:53:19,049 [INFO] src.access_bridge: Running macro: delete_macro
+2026-02-10 18:53:19,062 [INFO] src.access_bridge: Macro 'delete_macro' completed successfully
+2026-02-10 18:53:19,062 [INFO] src.access_bridge: Closing Access.
+2026-02-10 18:55:37,664 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 18:55:45,136 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 18:55:46,120 [INFO] src.access_bridge: Fetching preview rows from 'preview_delete' (limit 50)
+2026-02-10 18:55:46,157 [INFO] src.access_bridge: Closing Access.
+2026-02-10 18:55:55,780 [INFO] root: Starting macro action: Delete All
+2026-02-10 18:55:55,780 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 18:55:56,715 [INFO] src.access_bridge: Running macro: delete_macro
+2026-02-10 18:55:56,726 [INFO] src.access_bridge: Macro 'delete_macro' completed successfully
+2026-02-10 18:55:56,726 [INFO] src.access_bridge: Closing Access.
+2026-02-10 18:59:10,772 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 18:59:12,615 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 18:59:16,256 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 18:59:16,257 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD
+2026-02-10 19:01:26,881 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:01:30,483 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:01:31,439 [INFO] src.access_bridge: Fetching preview rows from 'preview_delete' (limit 50)
+2026-02-10 19:01:31,471 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:01:34,087 [INFO] root: Starting macro action: Delete All
+2026-02-10 19:01:34,087 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:01:35,028 [INFO] src.access_bridge: Running macro: delete_macro
+2026-02-10 19:01:35,041 [INFO] src.access_bridge: Macro 'delete_macro' completed successfully
+2026-02-10 19:01:35,041 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:01:42,255 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:01:42,521 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:01:44,632 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:01:45,607 [INFO] src.access_bridge: Fetching preview rows from 'preview_delete' (limit 50)
+2026-02-10 19:01:45,639 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:01:48,235 [INFO] root: Starting macro action: Delete All
+2026-02-10 19:01:48,235 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:01:49,141 [INFO] src.access_bridge: Running macro: delete_macro
+2026-02-10 19:01:49,153 [INFO] src.access_bridge: Macro 'delete_macro' completed successfully
+2026-02-10 19:01:49,153 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:02:00,583 [INFO] root: Starting upload process.
+2026-02-10 19:02:00,583 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:02:00,590 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:02:00,591 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD, Status
+2026-02-10 19:02:00,591 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:02:01,533 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-02-10 19:02:01,548 [INFO] src.access_bridge: Authentication successful.
+2026-02-10 19:02:01,548 [INFO] src.access_bridge: Importing Excel into temp table 'temp_table': C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:02:01,680 [INFO] src.access_bridge: Successfully imported C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx into temp_table
+2026-02-10 19:02:01,680 [INFO] src.access_bridge: Running macro: macro_name
+2026-02-10 19:02:01,692 [INFO] src.access_bridge: Macro 'macro_name' completed successfully
+2026-02-10 19:02:01,692 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:02:04,297 [INFO] root: Upload completed successfully.
+2026-02-10 19:02:36,324 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:02:36,331 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:02:38,574 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:02:39,518 [INFO] src.access_bridge: Fetching preview rows from 'preview_delete' (limit 50)
+2026-02-10 19:02:39,609 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:04:19,556 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:04:20,461 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:04:20,734 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:04:26,121 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:04:27,092 [INFO] src.access_bridge: Fetching preview rows from 'preview_delete' (limit 50)
+2026-02-10 19:04:27,182 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:04:32,899 [INFO] root: Starting macro action: Delete All
+2026-02-10 19:04:32,899 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:04:33,869 [INFO] src.access_bridge: Running macro: delete_macro
+2026-02-10 19:04:33,882 [INFO] src.access_bridge: Macro 'delete_macro' completed successfully
+2026-02-10 19:04:33,882 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:04:39,969 [INFO] root: Starting upload process.
+2026-02-10 19:04:39,969 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:04:39,979 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:04:39,980 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD, Status
+2026-02-10 19:04:39,980 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:04:40,925 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-02-10 19:04:40,947 [INFO] src.access_bridge: Authentication successful.
+2026-02-10 19:04:40,947 [INFO] src.access_bridge: Clearing temp table: temp_table
+2026-02-10 19:04:40,950 [INFO] src.access_bridge: Temp table 'temp_table' cleared
+2026-02-10 19:04:40,951 [INFO] src.access_bridge: Importing Excel into temp table 'temp_table': C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:04:41,113 [INFO] src.access_bridge: Successfully imported C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx into temp_table
+2026-02-10 19:04:41,114 [INFO] src.access_bridge: Running macro: macro_name
+2026-02-10 19:04:41,131 [INFO] src.access_bridge: Macro 'macro_name' completed successfully
+2026-02-10 19:04:41,131 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:04:43,764 [INFO] root: Upload completed successfully.
+2026-02-10 19:05:10,138 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:05:10,145 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:05:16,033 [INFO] root: Starting upload process.
+2026-02-10 19:05:16,034 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:05:16,041 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:05:16,041 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD, Status
+2026-02-10 19:05:16,041 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:05:16,989 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-02-10 19:05:17,004 [INFO] src.access_bridge: Authentication successful.
+2026-02-10 19:05:17,005 [INFO] src.access_bridge: Clearing temp table: temp_table
+2026-02-10 19:05:17,007 [INFO] src.access_bridge: Temp table 'temp_table' cleared
+2026-02-10 19:05:17,007 [INFO] src.access_bridge: Importing Excel into temp table 'temp_table': C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:05:17,120 [INFO] src.access_bridge: Successfully imported C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx into temp_table
+2026-02-10 19:05:17,120 [INFO] src.access_bridge: Running macro: macro_name
+2026-02-10 19:05:17,131 [INFO] src.access_bridge: Macro 'macro_name' completed successfully
+2026-02-10 19:05:17,131 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:05:19,736 [INFO] root: Upload completed successfully.
+2026-02-10 19:15:46,020 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:15:59,943 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:16:00,210 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:16:02,919 [INFO] root: Starting upload process.
+2026-02-10 19:16:02,919 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:16:02,926 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:16:02,927 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD, Status
+2026-02-10 19:16:02,927 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:16:03,922 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-02-10 19:16:03,938 [INFO] src.access_bridge: Authentication successful.
+2026-02-10 19:16:03,938 [INFO] src.access_bridge: Clearing temp table: temp_table
+2026-02-10 19:16:03,940 [INFO] src.access_bridge: Temp table 'temp_table' cleared
+2026-02-10 19:16:03,941 [INFO] src.access_bridge: Importing Excel into temp table 'temp_table': C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:16:04,058 [INFO] src.access_bridge: Successfully imported C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx into temp_table
+2026-02-10 19:16:04,058 [INFO] src.access_bridge: Running macro: macro_name
+2026-02-10 19:16:04,069 [INFO] src.access_bridge: Macro 'macro_name' completed successfully
+2026-02-10 19:16:04,070 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:16:06,678 [INFO] root: Upload completed successfully.
+2026-02-10 19:16:26,388 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:16:27,306 [INFO] src.access_bridge: Fetching preview rows from 'preview' (limit 50)
+2026-02-10 19:16:27,504 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:16:41,516 [INFO] root: Starting macro action: New Starters Transfer
+2026-02-10 19:16:41,516 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:16:42,494 [INFO] src.access_bridge: Running macro: macro_new_starters
+2026-02-10 19:16:42,507 [ERROR] src.access_bridge: Macro execution failed: (-2147352567, 'Exception occurred.', (0, None, "Microsoft Access cannot find the object 'macro_new_starters.'", 'acmain11.chm', 10183, -2146825803), None)
+2026-02-10 19:16:42,507 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:16:45,127 [ERROR] root: Macro action failed: Failed to run macro: (-2147352567, 'Exception occurred.', (0, None, "Microsoft Access cannot find the object 'macro_new_starters.'", 'acmain11.chm', 10183, -2146825803), None)
+2026-02-10 19:30:45,255 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:30:50,056 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:30:51,955 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:30:51,956 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:30:51,962 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:30:51,962 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD, Status
+2026-02-10 19:31:02,284 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-02-10 19:31:03,333 [INFO] src.access_bridge: Fetching preview rows from 'preview_delete' (limit 50)
+2026-02-10 19:31:03,546 [INFO] src.access_bridge: Closing Access.
+2026-02-10 19:36:02,002 [INFO] root: Selected file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:36:03,983 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:36:04,253 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:36:04,253 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
+2026-02-10 19:36:04,259 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
+2026-02-10 19:36:04,259 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD, Status

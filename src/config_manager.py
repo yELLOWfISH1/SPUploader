@@ -7,11 +7,26 @@ ROOT_DIR = SRC_DIR.parent
 CONFIG_PATHS = [ROOT_DIR / "config.ini", SRC_DIR / "config.ini"]
 
 DEFAULT_CONFIG = {
-    "access": {
+    "eol": {
         "db_path": "C:\\Path\\To\\Your\\Database.accdb",
         "macro_name": "AppendToSharePoint",
+        "delete_macro_name": "DeleteAllEntries",
+        "preview_query_incomplete": "qryEolIncompletePreview",
+        "preview_row_limit": "50",
         "linked_table": "SP_Devices",
         "temp_table": "TempImportTable",
+    },
+    "archive": {
+        "db_path": "C:\\Path\\To\\Your\\ArchiveDatabase.accdb",
+        "macro_new_starters": "NewStartersTransfer",
+        "macro_leavers": "LeaversTransfer",
+        "macro_mat_leavers": "MatLeaversTransfer",
+        "macro_transfers": "TransfersTransfer",
+        "preview_query_new_starters": "qryNewStartersPreview",
+        "preview_query_leavers": "qryLeaversPreview",
+        "preview_query_mat_leavers": "qryMatLeaversPreview",
+        "preview_query_transfers": "qryTransfersPreview",
+        "preview_row_limit": "50",
     },
     "validation": {
         "required_columns": "DeviceID,Model,EndOfLifeDate",
@@ -20,12 +35,38 @@ DEFAULT_CONFIG = {
         "log_file": "logs/uploader.log",
         "log_level": "INFO",
     },
+    "audit": {
+        "enabled": "true",
+        "log_folder": "logs/audit",
+        "log_file": "audit.log",
+    },
 }
 
 REQUIRED_KEYS = {
-    "access": ["db_path", "macro_name", "linked_table", "temp_table"],
+    "eol": [
+        "db_path",
+        "macro_name",
+        "delete_macro_name",
+        "preview_query_incomplete",
+        "preview_row_limit",
+        "linked_table",
+        "temp_table",
+    ],
+    "archive": [
+        "db_path",
+        "macro_new_starters",
+        "macro_leavers",
+        "macro_mat_leavers",
+        "macro_transfers",
+        "preview_query_new_starters",
+        "preview_query_leavers",
+        "preview_query_mat_leavers",
+        "preview_query_transfers",
+        "preview_row_limit",
+    ],
     "validation": ["required_columns"],
     "logging": ["log_file", "log_level"],
+    "audit": ["enabled", "log_folder", "log_file"],
 }
 
 class ConfigError(Exception):
