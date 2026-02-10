@@ -1,0 +1,6 @@
+2026-02-10 19:16:00,211 user=jackw machine=JACK-COM01 action=upload_prompt file=C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx rows=10
+2026-02-10 19:16:02,917 user=jackw machine=JACK-COM01 action=upload_start file=C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx rows=10
+2026-02-10 19:16:47,459 user=jackw machine=JACK-COM01 action=macro_failed action=New Starters Transfer error=Failed to run macro: (-2147352567, 'Exception occurred.', (0, None, "Microsoft Access cannot find the object 'macro_new_starters.'", 'acmain11.chm', 10183, -2146825803), None)
+2026-02-10 19:30:51,956 user=jackw machine=JACK-COM01 action=dry_run_start file=C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx rows=10
+2026-02-10 19:30:56,581 user=jackw machine=JACK-COM01 action=dry_run_success file=C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx rows=10
+2026-02-10 19:31:02,283 user=jackw machine=JACK-COM01 action=delete_preview_start query=preview_delete

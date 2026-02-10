@@ -1,6 +1,7 @@
+import csv
 import logging
 import pandas as pd
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -106,3 +107,39 @@ def validate_dataframe(
     
     logger.info(f"Validation passed for {len(df)} rows with columns: {', '.join(required_columns)}")
     return True, f"Validation passed. Ready to upload {len(df)} rows."
+
+
+def collect_validation_errors(df: pd.DataFrame, required_columns: List[str]) -> List[Dict[str, str]]:
+    errors: List[Dict[str, str]] = []
+    missing = [c for c in required_columns if c not in df.columns]
+    if missing:
+        for col in missing:
+            errors.append(
+                {
+                    "row_number": "",
+                    "column": col,
+                    "reason": "Missing required column",
+                }
+            )
+        return errors
+
+    for col in required_columns:
+        null_rows = df[df[col].isnull()].index
+        for row_index in null_rows:
+            errors.append(
+                {
+                    "row_number": str(row_index + 2),
+                    "column": col,
+                    "reason": "Empty required cell",
+                }
+            )
+
+    return errors
+
+
+def save_validation_errors_csv(errors: List[Dict[str, str]], output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", newline="", encoding="utf-8") as file_handle:
+        writer = csv.DictWriter(file_handle, fieldnames=["row_number", "column", "reason"])
+        writer.writeheader()
+        writer.writerows(errors)

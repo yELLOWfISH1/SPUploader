@@ -163,6 +163,40 @@ class AccessBridge:
             logger.error(f"Macro execution failed: {e}")
             raise AccessBridgeError(f"Failed to run macro: {e}") from e
 
+    def fetch_preview_rows(self, query_name: str, limit: int = 50):
+        """
+        Fetch rows from a saved query or table for preview.
+
+        Args:
+            query_name: Access query or table name
+            limit: Maximum number of rows to return
+
+        Returns:
+            Tuple of (columns, rows)
+        """
+        logger.info(f"Fetching preview rows from '{query_name}' (limit {limit})")
+        try:
+            db = self.access.CurrentDb()
+            rs = db.OpenRecordset(query_name)
+            columns = [rs.Fields(i).Name for i in range(rs.Fields.Count)]
+            rows = []
+            count = 0
+            if not rs.EOF:
+                rs.MoveFirst()
+            while not rs.EOF and count < limit:
+                row = []
+                for i in range(rs.Fields.Count):
+                    value = rs.Fields(i).Value
+                    row.append("" if value is None else str(value))
+                rows.append(row)
+                count += 1
+                rs.MoveNext()
+            rs.Close()
+            return columns, rows
+        except Exception as e:
+            logger.error(f"Preview query failed: {e}")
+            raise AccessBridgeError(f"Failed to fetch preview data: {e}") from e
+
     def clear_temp_table(self) -> None:
         """Clear the temporary import table (for rollback/cleanup)."""
         logger.info(f"Clearing temp table: {self.temp_table}")
