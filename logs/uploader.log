@@ -201,3 +201,254 @@
 2026-02-10 19:36:04,253 [INFO] src.validator: Loading Excel file: C:/Users/jackw/Desktop/SPUploader/output/RAW_DATA.xlsx
 2026-02-10 19:36:04,259 [INFO] src.validator: Successfully loaded 10 rows and 6 columns
 2026-02-10 19:36:04,259 [INFO] src.validator: Validation passed for 10 rows with columns: Old Hostname, Serial Number, Model, New Hostname, AD, Status
+2026-03-15 10:10:39,339 [ERROR] root: Fatal error during application startup.
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\app.py", line 102, in main
+    window = UploadApp(config, audit_logger, log_file)
+  File "c:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 89, in __init__
+    new_starters_cfg = config_obj.get("new_starters", {})
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 818, in get
+    option = self.optionxform(option)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 906, in optionxform
+    return optionstr.lower()
+           ^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'lower'
+2026-03-15 10:11:58,601 [ERROR] root: Fatal error during application startup.
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\app.py", line 102, in main
+    window = UploadApp(config, audit_logger, log_file)
+  File "c:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 89, in __init__
+    new_starters_cfg = config_obj.get("new_starters", {})
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 818, in get
+    option = self.optionxform(option)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 906, in optionxform
+    return optionstr.lower()
+           ^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'lower'
+2026-03-15 10:12:41,697 [ERROR] root: Fatal error during application startup.
+Traceback (most recent call last):
+  File "C:\Users\jackw\Desktop\SPUploader\app.py", line 102, in main
+    window = UploadApp(config, audit_logger, log_file)
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 89, in __init__
+    new_starters_cfg = config_obj.get("new_starters", {})
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 818, in get
+    option = self.optionxform(option)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 906, in optionxform
+    return optionstr.lower()
+           ^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'lower'
+2026-03-15 10:14:52,625 [ERROR] root: Fatal error during application startup.
+Traceback (most recent call last):
+  File "C:\Users\jackw\Desktop\SPUploader\app.py", line 112, in main
+    window = UploadApp(config, audit_logger, log_file)
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 89, in __init__
+    new_starters_cfg = config_obj.get("new_starters", {})
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 818, in get
+    option = self.optionxform(option)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\configparser.py", line 906, in optionxform
+    return optionstr.lower()
+           ^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'lower'
+2026-03-15 10:15:53,610 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:15:55,577 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:15:55,608 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:15:55,608 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:15:58,406 [ERROR] root: Initial SharePoint auth check failed.
+Traceback (most recent call last):
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 726, in check_sharepoint_authentication
+    self.set_status("SharePoint authentication OK.")
+    ^^^^^^^^^^^^^^^
+AttributeError: 'UploadApp' object has no attribute 'set_status'
+2026-03-15 10:15:58,408 [ERROR] root: Fatal error during application startup.
+Traceback (most recent call last):
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 726, in check_sharepoint_authentication
+    self.set_status("SharePoint authentication OK.")
+    ^^^^^^^^^^^^^^^
+AttributeError: 'UploadApp' object has no attribute 'set_status'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\jackw\Desktop\SPUploader\app.py", line 112, in main
+    window = UploadApp(config, audit_logger, log_file)
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 116, in __init__
+    self.create_ui()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 323, in create_ui
+    self.check_sharepoint_authentication()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 748, in check_sharepoint_authentication
+    self.set_status(f"Initial auth check failed: {exc}")
+    ^^^^^^^^^^^^^^^
+AttributeError: 'UploadApp' object has no attribute 'set_status'
+2026-03-15 10:17:24,662 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:17:25,626 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:17:25,649 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:17:25,649 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:17:27,956 [ERROR] root: Fatal error during application startup.
+Traceback (most recent call last):
+  File "C:\Users\jackw\Desktop\SPUploader\app.py", line 112, in main
+    window = UploadApp(config, audit_logger, log_file)
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 116, in __init__
+    self.create_ui()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 323, in create_ui
+    self.check_sharepoint_authentication()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 754, in check_sharepoint_authentication
+    self.status_label.setText(text)
+                              ^^^^
+NameError: name 'text' is not defined. Did you mean: 'next'?
+2026-03-15 10:18:59,737 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:19:00,756 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:19:00,783 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:19:00,783 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:20:04,616 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:20:05,548 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:20:05,569 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:20:05,570 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:27:00,631 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:27:01,612 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:27:01,642 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:27:01,642 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:27:32,918 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:27:33,884 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:27:33,910 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:27:33,910 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:29:22,751 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:29:23,720 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:29:23,748 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:29:23,749 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:36:32,826 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:36:33,841 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:36:33,868 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:36:33,868 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:37:17,513 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:37:18,481 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:37:18,510 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:37:18,511 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:49:51,272 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:49:52,219 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:49:52,239 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:49:52,239 [INFO] src.access_bridge: Clearing temp table: temp_table
+2026-03-15 10:49:52,243 [INFO] src.access_bridge: Temp table 'temp_table' cleared
+2026-03-15 10:49:52,244 [INFO] src.access_bridge: Importing Excel into temp table 'temp_table': C:\Users\jackw\Desktop\SPUploader\new_starters_schedule.xlsx
+2026-03-15 10:49:52,269 [ERROR] src.access_bridge: Excel import failed: (-2147352567, 'Exception occurred.', (0, None, "Field 'Name' doesn't exist in destination table 'temp_table.'", None, -1, -2146825897), None)
+2026-03-15 10:49:52,269 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:49:54,561 [ERROR] root: New Starters upload failed.
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 150, in import_excel_to_temp
+    self.access.DoCmd.TransferSpreadsheet(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        TransferType=0,          # acImport
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        HasFieldNames=True
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "<COMObject <unknown>>", line 3, in TransferSpreadsheet
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (0, None, "Field 'Name' doesn't exist in destination table 'temp_table.'", None, -1, -2146825897), None)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 750, in upload_new_starters_schedule
+    bridge.import_excel_to_temp(excel_path)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 160, in import_excel_to_temp
+    raise AccessBridgeError(f"Failed to import Excel file: {e}") from e
+src.access_bridge.AccessBridgeError: Failed to import Excel file: (-2147352567, 'Exception occurred.', (0, None, "Field 'Name' doesn't exist in destination table 'temp_table.'", None, -1, -2146825897), None)
+2026-03-15 10:50:23,785 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:50:24,721 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:50:24,745 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:50:24,745 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:50:47,437 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:50:48,357 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:50:48,379 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:50:48,379 [INFO] src.access_bridge: Clearing temp table: temp_newstarters
+2026-03-15 10:50:48,383 [INFO] src.access_bridge: Temp table 'temp_newstarters' cleared
+2026-03-15 10:50:48,383 [INFO] src.access_bridge: Importing Excel into temp table 'temp_newstarters': C:\Users\jackw\Desktop\SPUploader\new_starters_schedule.xlsx
+2026-03-15 10:50:48,403 [ERROR] src.access_bridge: Excel import failed: (-2147352567, 'Exception occurred.', (0, None, "Field 'Name' doesn't exist in destination table 'temp_newstarters.'", None, -1, -2146825897), None)
+2026-03-15 10:50:48,403 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:50:50,696 [ERROR] root: New Starters upload failed.
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 150, in import_excel_to_temp
+    self.access.DoCmd.TransferSpreadsheet(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        TransferType=0,          # acImport
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        HasFieldNames=True
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "<COMObject <unknown>>", line 3, in TransferSpreadsheet
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (0, None, "Field 'Name' doesn't exist in destination table 'temp_newstarters.'", None, -1, -2146825897), None)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 750, in upload_new_starters_schedule
+    bridge.import_excel_to_temp(excel_path)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 160, in import_excel_to_temp
+    raise AccessBridgeError(f"Failed to import Excel file: {e}") from e
+src.access_bridge.AccessBridgeError: Failed to import Excel file: (-2147352567, 'Exception occurred.', (0, None, "Field 'Name' doesn't exist in destination table 'temp_newstarters.'", None, -1, -2146825897), None)
+2026-03-15 10:52:44,754 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:52:45,694 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:52:45,715 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:52:45,715 [INFO] src.access_bridge: Clearing temp table: temp_newstarters
+2026-03-15 10:52:45,720 [INFO] src.access_bridge: Temp table 'temp_newstarters' cleared
+2026-03-15 10:52:45,721 [INFO] src.access_bridge: Importing Excel into temp table 'temp_newstarters': C:\Users\jackw\Desktop\SPUploader\new_starters_schedule.xlsx
+2026-03-15 10:52:45,749 [ERROR] src.access_bridge: Excel import failed: (-2147352567, 'Exception occurred.', (0, None, "Field 'Week Start' doesn't exist in destination table 'temp_newstarters.'", None, -1, -2146825897), None)
+2026-03-15 10:52:45,749 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:52:48,050 [ERROR] root: New Starters upload failed.
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 150, in import_excel_to_temp
+    self.access.DoCmd.TransferSpreadsheet(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        TransferType=0,          # acImport
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        HasFieldNames=True
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "<COMObject <unknown>>", line 3, in TransferSpreadsheet
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (0, None, "Field 'Week Start' doesn't exist in destination table 'temp_newstarters.'", None, -1, -2146825897), None)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 750, in upload_new_starters_schedule
+    bridge.import_excel_to_temp(excel_path)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 160, in import_excel_to_temp
+    raise AccessBridgeError(f"Failed to import Excel file: {e}") from e
+src.access_bridge.AccessBridgeError: Failed to import Excel file: (-2147352567, 'Exception occurred.', (0, None, "Field 'Week Start' doesn't exist in destination table 'temp_newstarters.'", None, -1, -2146825897), None)
+2026-03-15 10:53:31,964 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:53:32,894 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:53:32,913 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:53:32,914 [INFO] src.access_bridge: Clearing temp table: temp_newstarters
+2026-03-15 10:53:32,918 [INFO] src.access_bridge: Temp table 'temp_newstarters' cleared
+2026-03-15 10:53:32,918 [INFO] src.access_bridge: Importing Excel into temp table 'temp_newstarters': C:\Users\jackw\Desktop\SPUploader\new_starters_schedule.xlsx
+2026-03-15 10:53:33,028 [INFO] src.access_bridge: Successfully imported C:\Users\jackw\Desktop\SPUploader\new_starters_schedule.xlsx into temp_newstarters
+2026-03-15 10:53:33,028 [INFO] src.access_bridge: Running macro: NewStarters_Macro
+2026-03-15 10:53:33,039 [INFO] src.access_bridge: Macro 'NewStarters_Macro' completed successfully
+2026-03-15 10:53:33,039 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:54:07,540 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:54:08,472 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:54:08,495 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:54:08,495 [INFO] src.access_bridge: Clearing temp table: temp_newstarters
+2026-03-15 10:54:08,500 [INFO] src.access_bridge: Temp table 'temp_newstarters' cleared
+2026-03-15 10:54:08,501 [INFO] src.access_bridge: Importing Excel into temp table 'temp_newstarters': C:\Users\jackw\Desktop\SPUploader\new_starters_schedule.xlsx
+2026-03-15 10:54:08,617 [INFO] src.access_bridge: Successfully imported C:\Users\jackw\Desktop\SPUploader\new_starters_schedule.xlsx into temp_newstarters
+2026-03-15 10:54:08,617 [INFO] src.access_bridge: Running macro: NewStarters_Macro
+2026-03-15 10:54:08,630 [INFO] src.access_bridge: Macro 'NewStarters_Macro' completed successfully
+2026-03-15 10:54:08,630 [INFO] src.access_bridge: Closing Access.
+2026-03-15 10:54:24,479 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-15 10:54:25,415 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-15 10:54:25,431 [INFO] src.access_bridge: Authentication successful.
+2026-03-15 10:54:25,431 [INFO] src.access_bridge: Test connection successful.
+2026-03-15 10:54:25,431 [INFO] src.access_bridge: Closing Access.

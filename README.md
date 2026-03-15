@@ -8,6 +8,8 @@ SharePoint Upload Tool is a Windows GUI app that validates an Excel file, previe
 - Imports the Excel file into a local Access temp table.
 - Runs an Access macro to append rows to a linked SharePoint list.
 - Tests connectivity and authentication against SharePoint.
+- New: multi-region “New Starters Schedule” tab with separate London + Dublin names and combined week rotation.
+- Auto-saves the London/Dublin name lists so they are preserved on next launch.
 
 ## Requirements
 - Windows 10 or later.

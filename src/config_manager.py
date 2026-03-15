@@ -35,6 +35,14 @@ DEFAULT_CONFIG = {
         "log_file": "logs/uploader.log",
         "log_level": "INFO",
     },
+    "new_starters": {
+        "db_path": "C:\\Path\\To\\Your\\Database.accdb",
+        "linked_table": "SP_Devices",
+        "temp_table": "TempImportTable",
+        "macro_name": "NewStartersTransfer",
+        "london_names": "Jack\nLouise\nJoe",
+        "dublin_names": "Ann\nJohn",
+    },
     "audit": {
         "enabled": "true",
         "log_folder": "logs/audit",
