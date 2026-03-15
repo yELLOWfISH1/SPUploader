@@ -41,8 +41,18 @@ handler = logging.handlers.RotatingFileHandler(
 formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-def _is_truthy(value: str) -> bool:
-    return value.strip().lower() in {"1", "true", "yes", "y", "on"}
+def _is_truthy(value) -> bool:
+    """Interpret a value as boolean truthiness.
+
+    Supports str, bool, int and other scalar values. If dict is passed, checks nested values gracefully.
+    """
+    if isinstance(value, dict):
+        value = value.get("enabled", "false") if "enabled" in value else ""
+
+    try:
+        return str(value).strip().lower() in {"1", "true", "yes", "y", "on"}
+    except Exception:
+        return False
 
 
 def _setup_audit_logger(config_obj) -> Optional[logging.Logger]:
@@ -100,66 +110,6 @@ def main() -> None:
 
     try:
         window = UploadApp(config, audit_logger, log_file)
-
-        def on_splash_finished():
-            splash.close()
-            window.show()
-
-        splash.finished.connect(on_splash_finished)
-
-        sys.exit(app.exec())
-    except Exception as exc:
-        logger.exception("Fatal error during application startup.")
-        splash.close()
-        QMessageBox.critical(None, "Fatal Error", str(exc))
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()
-    def on_connection_finished(self, success: bool, message: str) -> None:
-        self.progress.setVisible(False)
-        self.progress.setRange(0, 100)
-        if success:
-            self.set_status("Connection test passed.")
-            QMessageBox.information(self, "Connection Test", message)
-        else:
-            self.set_status("Connection test failed.")
-            QMessageBox.warning(self, "Connection Test", message)
-
-    def open_log_viewer(self) -> None:
-        viewer = LogViewer(self, self.log_file)
-        viewer.exec()
-
-    def open_config_editor(self) -> None:
-        editor = ConfigEditor(self, self.config)
-        editor.exec()
-
-    def open_logs_folder(self) -> None:
-        try:
-            log_dir = Path(self.log_file).parent
-            QDesktopServices.openUrl(QUrl.fromLocalFile(str(log_dir)))
-            self.set_status("Opened logs folder")
-        except Exception as exc:
-            self.set_status(f"Error: {exc}")
-
-    def show_about(self) -> None:
-        about_text = f"""{APP_TITLE}
-
-Version: 1.0
-
-Description:
-Upload Excel data to SharePoint via an Access bridge with validation, preview, and logging."""
-        QMessageBox.information(self, "About", about_text)
-
-
-def main() -> None:
-    app = QApplication(sys.argv)
-
-    splash = create_splash_screen()
-
-    try:
-        window = UploadApp(config)
 
         def on_splash_finished():
             splash.close()

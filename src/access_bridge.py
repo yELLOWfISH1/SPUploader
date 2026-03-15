@@ -64,6 +64,17 @@ class AccessBridge:
         rs = db.OpenRecordset(self.linked_table)
         rs.Close()
 
+    def refresh_linked_table(self) -> None:
+        """Attempt to refresh the linked table metadata/connection."""
+        logger.info(f"Refreshing linked table: {self.linked_table}")
+        try:
+            db = self.access.CurrentDb()
+            table_def = db.TableDefs(self.linked_table)
+            table_def.RefreshLink()
+            logger.info("Linked table refreshed successfully.")
+        except Exception as e:
+            logger.warning(f"Could not refresh linked table: {e}")
+
     def ensure_authenticated(self, timeout_seconds: int = 300, poll_interval: int = 5) -> None:
         """
         Silently authenticate by attempting to open the linked table.

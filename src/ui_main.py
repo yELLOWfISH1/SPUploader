@@ -4,7 +4,7 @@ import socket
 from pathlib import Path
 from typing import Optional
 
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QUrl, QDate
 from PySide6.QtGui import QDesktopServices, QIcon
 from PySide6.QtWidgets import (
     QMainWindow,
@@ -25,8 +25,16 @@ from PySide6.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QCheckBox,
+    QPlainTextEdit,
+    QDateEdit,
+    QListWidget,
+    QListWidgetItem,
 )
+import pandas as pd
+from datetime import date, timedelta
 
+from .access_bridge import AccessBridge, AccessBridgeError, AuthenticationError, PermissionError
+from .config_manager import save_config
 from .ui_workers import UploadWorker, ConnectionTestWorker, MacroWorker, PreviewWorker
 from .ui_dialogs import LogViewer, ConfigEditor, ValidationErrorsDialog
 from .validator import (
@@ -78,6 +86,21 @@ class UploadApp(QMainWindow):
         ]
 
         self.log_file = log_file
+
+        if config_obj.has_section("new_starters"):
+            new_starters_cfg = config_obj["new_starters"]
+        else:
+            new_starters_cfg = {}
+
+        self.new_starters_db_path = new_starters_cfg.get("db_path", self.db_path)
+        self.new_starters_macro_name = new_starters_cfg.get("macro_name", "")
+        self.new_starters_temp_table = new_starters_cfg.get("temp_table", self.temp_table)
+        self.new_starters_linked_table = new_starters_cfg.get("linked_table", self.linked_table)
+
+        self.london_names_saved = new_starters_cfg.get("london_names", "")
+        self.dublin_names_saved = new_starters_cfg.get("dublin_names", "")
+
+        self.new_starters_df = None
         self.upload_worker = None
         self.connection_worker = None
         self.macro_worker = None
@@ -294,10 +317,14 @@ class UploadApp(QMainWindow):
         tabs = QTabWidget()
         tabs.addTab(self.create_upload_tab(), "End Of Life Uploader")
         tabs.addTab(self.create_archive_tab(), "Archiver")
+        tabs.addTab(self.create_new_starters_tab(), "New Starters Schedule")
         main_layout.addWidget(tabs, 1)
 
         footer = self.create_footer()
         main_layout.addWidget(footer)
+
+        # Initial SharePoint authentication check at startup
+        self.check_sharepoint_authentication()
 
         central_widget.setLayout(main_layout)
 
@@ -345,6 +372,28 @@ class UploadApp(QMainWindow):
 
         footer.setLayout(layout)
         return footer
+
+    def set_status(self, text: str) -> None:
+        if hasattr(self, "status_label") and self.status_label is not None:
+            self.status_label.setText(text)
+        logger.debug(f"Status: {text}")
+
+    def auto_save_new_starters_names(self) -> None:
+        if not self.config.has_section("new_starters"):
+            self.config.add_section("new_starters")
+
+        london_text = self.london_names_box.toPlainText().strip()
+        dublin_text = self.dublin_names_box.toPlainText().strip()
+
+        self.config.set("new_starters", "london_names", london_text)
+        self.config.set("new_starters", "dublin_names", dublin_text)
+
+        try:
+            save_config(self.config)
+            self.set_status("New Starters names saved.")
+        except Exception as exc:
+            logger.exception("Failed to auto-save New Starters names.")
+            self.set_status(f"Error saving names: {exc}")
 
     def create_upload_tab(self) -> QWidget:
         container = QWidget()
@@ -479,9 +528,271 @@ class UploadApp(QMainWindow):
         container.setLayout(layout)
         return container
 
-    def set_status(self, text: str) -> None:
-        self.status_label.setText(text)
-        logger.debug(f"Status: {text}")
+    def create_new_starters_tab(self) -> QWidget:
+        container = QWidget()
+        layout = QVBoxLayout()
+        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setSpacing(12)
+
+        title = QLabel("New Starters Schedule")
+        title.setObjectName("section-title")
+        layout.addWidget(title)
+
+        info = QLabel(
+            "Create a weekly schedule for new starters and upload it to SharePoint via Access."
+        )
+        info.setStyleSheet("color: #999999; font-size: 11px;")
+        info.setWordWrap(True)
+        layout.addWidget(info)
+
+        london_label = QLabel("London Names (one per line):")
+        layout.addWidget(london_label)
+        self.london_names_box = QPlainTextEdit()
+        self.london_names_box.setPlaceholderText("Jack\nLouise\nJoe")
+        self.london_names_box.setPlainText(self.london_names_saved)
+        self.london_names_box.setFixedHeight(100)
+        self.london_names_box.textChanged.connect(self.auto_save_new_starters_names)
+        layout.addWidget(self.london_names_box)
+
+        dublin_label = QLabel("Dublin Names (one per line):")
+        layout.addWidget(dublin_label)
+        self.dublin_names_box = QPlainTextEdit()
+        self.dublin_names_box.setPlaceholderText("Ann\nJohn")
+        self.dublin_names_box.setPlainText(self.dublin_names_saved)
+        self.dublin_names_box.setFixedHeight(100)
+        self.dublin_names_box.textChanged.connect(self.auto_save_new_starters_names)
+        layout.addWidget(self.dublin_names_box)
+
+        dates_layout = QHBoxLayout()
+        self.start_date_edit = QDateEdit(QDate.currentDate())
+        self.start_date_edit.setCalendarPopup(True)
+        self.start_date_edit.setMinimumDate(QDate.currentDate())
+        dates_layout.addWidget(QLabel("Start Date:"))
+        dates_layout.addWidget(self.start_date_edit)
+
+        self.end_date_edit = QDateEdit(QDate.currentDate().addMonths(3))
+        self.end_date_edit.setCalendarPopup(True)
+        self.end_date_edit.setMinimumDate(QDate.currentDate().addMonths(3))
+        dates_layout.addWidget(QLabel("End Date:"))
+        dates_layout.addWidget(self.end_date_edit)
+
+        layout.addLayout(dates_layout)
+
+        action_layout = QHBoxLayout()
+        gen_btn = QPushButton("Generate Schedule")
+        gen_btn.clicked.connect(self.generate_new_starters_schedule)
+        action_layout.addWidget(gen_btn)
+
+        export_btn = QPushButton("Export to Excel")
+        export_btn.clicked.connect(self.export_new_starters_schedule)
+        action_layout.addWidget(export_btn)
+
+        upload_btn = QPushButton("Upload to SharePoint")
+        upload_btn.clicked.connect(self.upload_new_starters_schedule)
+        action_layout.addWidget(upload_btn)
+
+        layout.addLayout(action_layout)
+
+        self.new_starters_preview = QTableWidget()
+        self.new_starters_preview.setColumnCount(3)
+        self.new_starters_preview.setHorizontalHeaderLabels(["Name", "Week Start", "Week End"])
+        self.new_starters_preview.setVisible(False)
+        layout.addWidget(self.new_starters_preview)
+
+        layout.addStretch()
+        container.setLayout(layout)
+        return container
+
+    def _get_new_starter_names(self, box: QPlainTextEdit):
+        raw_text = box.toPlainText().strip()
+        names = [n.strip() for n in raw_text.splitlines() if n.strip()]
+        return list(dict.fromkeys(names))
+
+    def generate_new_starters_schedule(self) -> None:
+        london_names = self._get_new_starter_names(self.london_names_box)
+        dublin_names = self._get_new_starter_names(self.dublin_names_box)
+
+        if not london_names:
+            QMessageBox.warning(self, "Input Error", "Please provide at least one London name.")
+            return
+
+        if not dublin_names:
+            QMessageBox.warning(self, "Input Error", "Please provide at least one Dublin name.")
+            return
+
+        start_qdate = self.start_date_edit.date()
+        end_qdate = self.end_date_edit.date()
+        start = start_qdate.toPython()
+        end = end_qdate.toPython()
+
+        if start < date.today():
+            QMessageBox.warning(self, "Date Error", "Start date must be today or in the future.")
+            return
+
+        if end < date.today() + timedelta(days=90):
+            QMessageBox.warning(self, "Date Error", "End date must be at least 3 months from today.")
+            return
+
+        if end < start:
+            QMessageBox.warning(self, "Date Error", "End date must be after start date.")
+            return
+
+        # Align the first week to Monday -> Sunday
+        if start.weekday() != 0:
+            offset_days = 7 - start.weekday()
+            start = start + timedelta(days=offset_days)
+
+        rows = []
+        current_start = start
+        idx = 0
+
+        while current_start <= end:
+            week_end = current_start + timedelta(days=6)
+            if week_end > end:
+                week_end = end
+
+            london = london_names[idx % len(london_names)]
+            dublin = dublin_names[idx % len(dublin_names)]
+            combined_name = f"{london} / {dublin}"
+
+            rows.append(
+                {
+                    "Name": combined_name,
+                    "Week Start": current_start.isoformat(),
+                    "Week End": week_end.isoformat(),
+                }
+            )
+
+            idx += 1
+            current_start = week_end + timedelta(days=1)
+
+        self.new_starters_df = pd.DataFrame(rows)
+        self._display_new_starters_preview(self.new_starters_df)
+        self.set_status(f"Generated schedule: {len(rows)} weeks")
+
+    def _display_new_starters_preview(self, df):
+        self.new_starters_preview.setVisible(True)
+        self.new_starters_preview.setRowCount(len(df))
+        self.new_starters_preview.setColumnCount(len(df.columns))
+        self.new_starters_preview.setHorizontalHeaderLabels(list(df.columns))
+        for r, row in df.iterrows():
+            for c, value in enumerate(row):
+                self.new_starters_preview.setItem(r, c, QTableWidgetItem(str(value)))
+        self.new_starters_preview.resizeColumnsToContents()
+
+    def export_new_starters_schedule(self) -> None:
+        if self.new_starters_df is None or self.new_starters_df.empty:
+            QMessageBox.warning(self, "Export Error", "No schedule generated to export.")
+            return
+
+        excel_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save New Starters Schedule",
+            "new_starters_schedule.xlsx",
+            "Excel Files (*.xlsx)",
+        )
+        if not excel_path:
+            return
+
+        try:
+            self.new_starters_df.to_excel(excel_path, index=False)
+            self.set_status(f"Schedule exported: {excel_path}")
+            QMessageBox.information(self, "Exported", f"Schedule exported to {excel_path}")
+        except Exception as exc:
+            logger.exception("Excel export failed.")
+            QMessageBox.warning(self, "Export Error", f"Failed to save Excel file:\n{exc}")
+
+    def upload_new_starters_schedule(self) -> None:
+        if self.new_starters_df is None or self.new_starters_df.empty:
+            QMessageBox.warning(self, "Upload Error", "Generate the schedule before uploading.")
+            return
+
+        default_path = Path.cwd() / "new_starters_schedule.xlsx"
+        excel_path = str(default_path)
+        try:
+            self.new_starters_df.to_excel(excel_path, index=False)
+        except Exception as exc:
+            logger.exception("Excel temp save failed.")
+            QMessageBox.warning(self, "Upload Error", f"Failed to prepare upload file:\n{exc}")
+            return
+
+        reply = QMessageBox.question(
+            self,
+            "Confirm Upload",
+            f"Upload generated schedule ({len(self.new_starters_df)} rows)?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+        if reply != QMessageBox.Yes:
+            return
+
+        self.set_status("Starting New Starters upload...")
+        self.progress.setVisible(True)
+        self.progress.setRange(0, 0)
+
+        try:
+            with AccessBridge(
+                db_path=self.new_starters_db_path,
+                linked_table=self.new_starters_linked_table,
+                temp_table=self.new_starters_temp_table,
+                macro_name=self.new_starters_macro_name,
+            ) as bridge:
+                try:
+                    bridge.ensure_authenticated(timeout_seconds=120, poll_interval=5)
+                except PermissionError as exc:
+                    QMessageBox.warning(self, "Permission Error", str(exc))
+                    raise
+                except Exception as exc:
+                    QMessageBox.warning(self, "Authentication Error", "Authentication failed. Please sign in via Microsoft login and retry.")
+                    raise
+
+                bridge.clear_temp_table()
+                bridge.import_excel_to_temp(excel_path)
+                bridge.run_macro()
+
+            self.set_status("New Starters upload completed.")
+            QMessageBox.information(self, "Success", "New Starters schedule uploaded successfully.")
+        except Exception as exc:
+            logger.exception("New Starters upload failed.")
+            self.set_status("New Starters upload failed.")
+            QMessageBox.warning(self, "Upload Error", f"Upload failed:\n{exc}")
+        finally:
+            self.progress.setVisible(False)
+            self.progress.setRange(0, 100)
+
+    def check_sharepoint_authentication(self) -> None:
+        try:
+            with AccessBridge(
+                db_path=self.db_path,
+                linked_table=self.linked_table,
+                temp_table=self.temp_table,
+                macro_name=self.macro_name,
+            ) as bridge:
+                try:
+                    bridge.ensure_authenticated(timeout_seconds=15, poll_interval=2)
+                    self.set_status("SharePoint authentication OK.")
+                except AuthenticationError as exc:
+                    self.set_status("SharePoint authentication required.")
+                    QMessageBox.information(
+                        self,
+                        "SharePoint Login Required",
+                        "Please sign in to Microsoft in the Access window that appears, then click OK.",
+                    )
+                    bridge.access.Visible = True
+                    bridge.refresh_linked_table()
+                    try:
+                        bridge.ensure_authenticated(timeout_seconds=180, poll_interval=5)
+                        self.set_status("SharePoint authentication OK after login.")
+                        bridge.access.Visible = False
+                    except Exception as exc2:
+                        self.set_status("Authentication incomplete.")
+                        QMessageBox.warning(self, "Authentication", f"Authentication still failed: {exc2}")
+                except PermissionError as exc2:
+                    self.set_status("Permission error for SharePoint list.")
+                    QMessageBox.warning(self, "Permission Error", str(exc2))
+        except Exception as exc:
+            logger.exception("Initial SharePoint auth check failed.")
+            self.set_status(f"Initial auth check failed: {exc}")
 
     def pick_file(self) -> None:
         file_path, _ = QFileDialog.getOpenFileName(
