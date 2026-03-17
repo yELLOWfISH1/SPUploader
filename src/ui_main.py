@@ -299,6 +299,7 @@ class UploadApp(QMainWindow):
         menubar = QMenuBar(self)
         tools_menu = QMenu("Tools", self)
         tools_menu.addAction("Test Connection", self.test_connection)
+        tools_menu.addAction("Refresh Linked Table", self.refresh_linked_table)
         tools_menu.addAction("View Log", self.open_log_viewer)
         # tools_menu.addAction("Edit Config", self.open_config_editor)
         menubar.addMenu(tools_menu)
@@ -771,28 +772,64 @@ class UploadApp(QMainWindow):
                 try:
                     bridge.ensure_authenticated(timeout_seconds=15, poll_interval=2)
                     self.set_status("SharePoint authentication OK.")
-                except AuthenticationError as exc:
-                    self.set_status("SharePoint authentication required.")
-                    QMessageBox.information(
-                        self,
-                        "SharePoint Login Required",
-                        "Please sign in to Microsoft in the Access window that appears, then click OK.",
-                    )
-                    bridge.access.Visible = True
-                    bridge.refresh_linked_table()
+
+                    # Always attempt a silent linked table refresh after auth
                     try:
-                        bridge.ensure_authenticated(timeout_seconds=180, poll_interval=5)
-                        self.set_status("SharePoint authentication OK after login.")
-                        bridge.access.Visible = False
+                        bridge.refresh_linked_table()
+                        self.set_status("SharePoint linked table refreshed.")
                     except Exception as exc2:
-                        self.set_status("Authentication incomplete.")
-                        QMessageBox.warning(self, "Authentication", f"Authentication still failed: {exc2}")
+                        logger.warning(f"Linked table refresh failed: {exc2}")
+                        self.set_status("Linked table refresh failed, continuing anyway.")
+
+                except AuthenticationError as exc:
+                    self.set_status("SharePoint authentication required, retrying silently.")
+
+                    # Try to recover silently with a slightly longer window
+                    bridge.access.Visible = False
+                    try:
+                        bridge.ensure_authenticated(timeout_seconds=180, poll_interval=5, interactive=False)
+                        self.set_status("SharePoint authentication OK after retry.")
+                        bridge.refresh_linked_table()
+                        self.set_status("SharePoint linked table refreshed after retry.")
+                    except Exception as exc2:
+                        self.set_status("Authentication incomplete after retry.")
+                        logger.warning(f"Authentication or refresh failed: {exc2}")
+                        QMessageBox.warning(
+                            self,
+                            "Authentication Required",
+                            "The app could not authenticate silently. Please open Access manually and re-link the list as needed."
+                        )
+
                 except PermissionError as exc2:
                     self.set_status("Permission error for SharePoint list.")
                     QMessageBox.warning(self, "Permission Error", str(exc2))
         except Exception as exc:
             logger.exception("Initial SharePoint auth check failed.")
             self.set_status(f"Initial auth check failed: {exc}")
+
+    def refresh_linked_table(self) -> None:
+        self.set_status("Refreshing SharePoint linked table...")
+        self.progress.setVisible(True)
+        self.progress.setRange(0, 0)
+
+        try:
+            with AccessBridge(
+                db_path=self.db_path,
+                linked_table=self.linked_table,
+                temp_table=self.temp_table,
+                macro_name=self.macro_name,
+            ) as bridge:
+                bridge.ensure_authenticated(timeout_seconds=60, poll_interval=2, interactive=False)
+                bridge.refresh_linked_table()
+            self.set_status("Linked table refresh completed.")
+            QMessageBox.information(self, "Refresh Complete", "SharePoint linked table has been refreshed silently.")
+        except Exception as exc:
+            logger.exception("Linked table refresh failed.")
+            self.set_status("Linked table refresh failed.")
+            QMessageBox.warning(self, "Refresh Failed", f"Could not refresh linked table:\n{exc}")
+        finally:
+            self.progress.setVisible(False)
+            self.progress.setRange(0, 100)
 
     def pick_file(self) -> None:
         file_path, _ = QFileDialog.getOpenFileName(

@@ -75,16 +75,16 @@ class AccessBridge:
         except Exception as e:
             logger.warning(f"Could not refresh linked table: {e}")
 
-    def ensure_authenticated(self, timeout_seconds: int = 300, poll_interval: int = 5) -> None:
+    def ensure_authenticated(self, timeout_seconds: int = 300, poll_interval: int = 5, interactive: bool = False) -> None:
         """
-        Silently authenticate by attempting to open the linked table.
-        If authentication fails, waits for user to authenticate via background process.
-        Never shows the Access window to the user.
-        
+        Authenticate by attempting to open the linked table.
+        If interactive is False, keeps Access hidden; if True, keeps it visible for manual auth.
+
         Args:
             timeout_seconds: Maximum time to wait for authentication
             poll_interval: Time between retry attempts in seconds
-            
+            interactive: If True, show Access to allow manual sign-in.
+
         Raises:
             PermissionError: If user lacks permission to access SharePoint list
             AuthenticationError: If authentication cannot be completed
@@ -119,9 +119,11 @@ class AccessBridge:
                         "Please ensure you're logged in and try again."
                     ) from e
 
-                # Keep Access hidden while waiting for background authentication
-                # (Access handles SharePoint auth in background with cached credentials)
-                self.access.Visible = False
+                if interactive:
+                    self.access.Visible = True
+                else:
+                    self.access.Visible = False
+
                 logger.debug(f"Waiting for authentication (polling in {poll_interval}s)...")
                 time.sleep(poll_interval)
 

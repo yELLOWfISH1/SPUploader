@@ -452,3 +452,19 @@ src.access_bridge.AccessBridgeError: Failed to import Excel file: (-2147352567, 
 2026-03-15 10:54:25,431 [INFO] src.access_bridge: Authentication successful.
 2026-03-15 10:54:25,431 [INFO] src.access_bridge: Test connection successful.
 2026-03-15 10:54:25,431 [INFO] src.access_bridge: Closing Access.
+2026-03-17 16:40:14,694 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-17 16:40:16,059 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-17 16:40:16,088 [INFO] src.access_bridge: Authentication successful.
+2026-03-17 16:40:16,089 [INFO] src.access_bridge: Closing Access.
+2026-03-17 16:43:16,633 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-17 16:43:17,625 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-17 16:43:17,650 [INFO] src.access_bridge: Authentication successful.
+2026-03-17 16:43:17,651 [INFO] src.access_bridge: Refreshing linked table: linked_table
+2026-03-17 16:43:17,662 [WARNING] src.access_bridge: Could not refresh linked table: (-2147352567, 'Exception occurred.', (0, 'DAO.TableDef', 'Invalid operation.', 'jeterr40.chm', 5003219, -2146825069), None)
+2026-03-17 16:43:17,663 [INFO] src.access_bridge: Closing Access.
+2026-03-17 16:46:54,094 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-17 16:46:55,036 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-17 16:46:55,058 [INFO] src.access_bridge: Authentication successful.
+2026-03-17 16:46:55,058 [INFO] src.access_bridge: Refreshing linked table: linked_table
+2026-03-17 16:46:55,069 [WARNING] src.access_bridge: Could not refresh linked table: (-2147352567, 'Exception occurred.', (0, 'DAO.TableDef', 'Invalid operation.', 'jeterr40.chm', 5003219, -2146825069), None)
+2026-03-17 16:46:55,071 [INFO] src.access_bridge: Closing Access.
