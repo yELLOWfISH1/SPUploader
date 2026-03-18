@@ -125,6 +125,36 @@ class ConnectionTestWorker(QThread):
                 pass
 
 
+class AuthenticationWorker(QThread):
+    finished = Signal(bool, str)
+
+    def __init__(self, config_obj, interactive=False):
+        super().__init__()
+        self.config_obj = config_obj
+        self.interactive = interactive
+
+    def run(self) -> None:
+        with AccessBridge(
+            db_path=self.config_obj["eol"]["db_path"],
+            linked_table=self.config_obj["eol"]["linked_table"],
+            temp_table=self.config_obj["eol"]["temp_table"],
+            macro_name=self.config_obj["eol"]["macro_name"],
+        ) as bridge:
+            try:
+                bridge.ensure_authenticated(timeout_seconds=35, poll_interval=3, interactive=self.interactive)
+                try:
+                    bridge.refresh_linked_table()
+                except Exception as refresh_exc:
+                    logger.warning(f"Linked table refresh during auth worker failed: {refresh_exc}")
+                self.finished.emit(True, "Authentication successful.")
+            except PermissionError as exc:
+                self.finished.emit(False, str(exc))
+            except AuthenticationError as exc:
+                self.finished.emit(False, str(exc))
+            except Exception as exc:
+                self.finished.emit(False, str(exc))
+
+
 class MacroWorker(QThread):
     status = Signal(str)
     finished = Signal(bool, str)

@@ -4,7 +4,7 @@ import socket
 from pathlib import Path
 from typing import Optional
 
-from PySide6.QtCore import QUrl, QDate
+from PySide6.QtCore import QUrl, QDate, QTimer
 from PySide6.QtGui import QDesktopServices, QIcon
 from PySide6.QtWidgets import (
     QMainWindow,
@@ -35,7 +35,7 @@ from datetime import date, timedelta
 
 from .access_bridge import AccessBridge, AccessBridgeError, AuthenticationError, PermissionError
 from .config_manager import save_config
-from .ui_workers import UploadWorker, ConnectionTestWorker, MacroWorker, PreviewWorker
+from .ui_workers import UploadWorker, ConnectionTestWorker, AuthenticationWorker, MacroWorker, PreviewWorker
 from .ui_dialogs import LogViewer, ConfigEditor, ValidationErrorsDialog
 from .validator import (
     load_excel,
@@ -324,8 +324,8 @@ class UploadApp(QMainWindow):
         footer = self.create_footer()
         main_layout.addWidget(footer)
 
-        # Initial SharePoint authentication check at startup
-        self.check_sharepoint_authentication()
+        # Initial SharePoint authentication check at startup (non-blocking)
+        QTimer.singleShot(100, self.check_sharepoint_authentication)
 
         central_widget.setLayout(main_layout)
 
@@ -762,55 +762,83 @@ class UploadApp(QMainWindow):
             self.progress.setRange(0, 100)
 
     def check_sharepoint_authentication(self) -> None:
-        try:
-            with AccessBridge(
-                db_path=self.db_path,
-                linked_table=self.linked_table,
-                temp_table=self.temp_table,
-                macro_name=self.macro_name,
-            ) as bridge:
-                try:
-                    bridge.ensure_authenticated(timeout_seconds=15, poll_interval=2)
-                    self.set_status("SharePoint authentication OK.")
+        self.set_status("Checking SharePoint authentication...")
+        self.progress.setVisible(True)
+        self.progress.setRange(0, 0)
 
-                    # Always attempt a silent linked table refresh after auth
-                    try:
-                        bridge.refresh_linked_table()
-                        self.set_status("SharePoint linked table refreshed.")
-                    except Exception as exc2:
-                        logger.warning(f"Linked table refresh failed: {exc2}")
-                        self.set_status("Linked table refresh failed, continuing anyway.")
+        self.auth_worker = AuthenticationWorker(self.config, interactive=False)
+        self.auth_worker.finished.connect(self.on_auth_check_finished)
+        self.auth_worker.start()
 
-                except AuthenticationError as exc:
-                    self.set_status("SharePoint authentication required, retrying silently.")
+    def on_auth_check_finished(self, success: bool, message: str) -> None:
+        self.progress.setVisible(False)
+        self.progress.setRange(0, 100)
 
-                    # Try to recover silently with a slightly longer window
-                    bridge.access.Visible = False
-                    try:
-                        bridge.ensure_authenticated(timeout_seconds=180, poll_interval=5, interactive=False)
-                        self.set_status("SharePoint authentication OK after retry.")
-                        bridge.refresh_linked_table()
-                        self.set_status("SharePoint linked table refreshed after retry.")
-                    except Exception as exc2:
-                        self.set_status("Authentication incomplete after retry.")
-                        logger.warning(f"Authentication or refresh failed: {exc2}")
-                        QMessageBox.warning(
-                            self,
-                            "Authentication Required",
-                            "The app could not authenticate silently. Please open Access manually and re-link the list as needed."
-                        )
+        if success:
+            self.set_status("SharePoint authentication OK.")
+            QMessageBox.information(self, "SharePoint Auth", "SharePoint authentication succeeded.")
+            return
 
-                except PermissionError as exc2:
-                    self.set_status("Permission error for SharePoint list.")
-                    QMessageBox.warning(self, "Permission Error", str(exc2))
-        except Exception as exc:
-            logger.exception("Initial SharePoint auth check failed.")
-            self.set_status(f"Initial auth check failed: {exc}")
+        self.set_status("SharePoint authentication failed.")
+        logger.warning(f"Auth check failed: {message}")
+
+        result = QMessageBox.question(
+            self,
+            "Authentication Required",
+            "Could not authenticate silently. Do you want to try interactive authentication with Access visible?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.Yes,
+        )
+
+        if result == QMessageBox.Yes:
+            self.authenticate_interactively()
+        else:
+            QMessageBox.warning(
+                self,
+                "Authentication Required",
+                "Authentication is required to use the uploader. Please sign in via Access and retry."
+            )
+
+    def authenticate_interactively(self) -> None:
+        self.set_status("Starting interactive authentication...")
+        self.progress.setVisible(True)
+        self.progress.setRange(0, 0)
+
+        self.auth_worker = AuthenticationWorker(self.config, interactive=True)
+        self.auth_worker.finished.connect(self.on_interactive_auth_finished)
+        self.auth_worker.start()
+
+    def on_interactive_auth_finished(self, success: bool, message: str) -> None:
+        self.progress.setVisible(False)
+        self.progress.setRange(0, 100)
+
+        if success:
+            self.set_status("Interactive authentication succeeded.")
+            QMessageBox.information(self, "Authenticated", "Interactive authentication completed successfully.")
+        else:
+            self.set_status("Interactive authentication failed.")
+            QMessageBox.warning(self, "Authentication Failed", f"Interactive authentication failed:\n{message}")
 
     def refresh_linked_table(self) -> None:
         self.set_status("Refreshing SharePoint linked table...")
         self.progress.setVisible(True)
         self.progress.setRange(0, 0)
+
+        self.auth_worker = AuthenticationWorker(self.config, interactive=False)
+        self.auth_worker.finished.connect(self.on_refresh_done)
+        self.auth_worker.start()
+
+    def on_refresh_done(self, success: bool, message: str) -> None:
+        self.progress.setVisible(False)
+        self.progress.setRange(0, 100)
+
+        if success:
+            self.set_status("Linked table refresh completed.")
+            QMessageBox.information(self, "Refresh Complete", "SharePoint linked table has been refreshed silently.")
+        else:
+            self.set_status("Linked table refresh failed.")
+            logger.warning(f"Refresh action failed: {message}")
+            QMessageBox.warning(self, "Refresh Failed", f"Could not refresh linked table:\n{message}")
 
         try:
             with AccessBridge(
