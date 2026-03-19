@@ -64,6 +64,23 @@ class AccessBridge:
         rs = db.OpenRecordset(self.linked_table)
         rs.Close()
 
+    def _attempt_interactive_signin(self) -> None:
+        """Open the linked table in Access UI to prompt for user sign-in."""
+        if not self.access:
+            return
+
+        self.access.Visible = True
+        try:
+            # Open the linked table in datasheet view to force credential prompt if required.
+            self.access.DoCmd.OpenTable(self.linked_table, 0, 0)
+            # Optionally close it again.
+            try:
+                self.access.DoCmd.Close(2, self.linked_table)
+            except Exception:
+                pass
+        except Exception as e:
+            logger.debug(f"Interactive link open attempt failed: {e}")
+
     def refresh_linked_table(self) -> None:
         """Attempt to refresh the linked table metadata/connection."""
         logger.info(f"Refreshing linked table: {self.linked_table}")
@@ -74,6 +91,36 @@ class AccessBridge:
             logger.info("Linked table refreshed successfully.")
         except Exception as e:
             logger.warning(f"Could not refresh linked table: {e}")
+            raise AccessBridgeError(f"Could not refresh linked table: {e}") from e
+
+    def recreate_linked_table(self) -> None:
+        """Delete and recreate the linked table from existing table definition."""
+        logger.info(f"Recreating linked table: {self.linked_table}")
+        db = self.access.CurrentDb()
+        try:
+            existing_def = db.TableDefs(self.linked_table)
+            connect = existing_def.Connect
+            source = existing_def.SourceTableName
+            attrs = existing_def.Attributes
+
+            # Remove existing linked table definition
+            db.TableDefs.Delete(self.linked_table)
+            logger.info("Deleted existing linked table definition.")
+
+            # Create a new link using the same connection and source list
+            new_def = db.CreateTableDef(self.linked_table)
+            new_def.Connect = connect
+            new_def.SourceTableName = source
+            new_def.Attributes = attrs
+            db.TableDefs.Append(new_def)
+            new_def.RefreshLink()
+            logger.info("Recreated linked table definition.")
+
+        except Exception as e:
+            logger.error(f"Failed to recreate linked table: {e}")
+            raise AccessBridgeError(
+                f"Could not recreate linked table '{self.linked_table}': {e}"
+            ) from e
 
     def ensure_authenticated(self, timeout_seconds: int = 300, poll_interval: int = 5, interactive: bool = False) -> None:
         """
@@ -121,6 +168,7 @@ class AccessBridge:
 
                 if interactive:
                     self.access.Visible = True
+                    self._attempt_interactive_signin()
                 else:
                     self.access.Visible = False
 

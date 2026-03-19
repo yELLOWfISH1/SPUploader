@@ -300,6 +300,8 @@ class UploadApp(QMainWindow):
         tools_menu = QMenu("Tools", self)
         tools_menu.addAction("Test Connection", self.test_connection)
         tools_menu.addAction("Refresh Linked Table", self.refresh_linked_table)
+        tools_menu.addAction("Recreate Linked Table", self.recreate_linked_table)
+        tools_menu.addAction("Open Access for Sign-in", self.open_access_for_signin)
         tools_menu.addAction("View Log", self.open_log_viewer)
         # tools_menu.addAction("Edit Config", self.open_config_editor)
         menubar.addMenu(tools_menu)
@@ -839,6 +841,72 @@ class UploadApp(QMainWindow):
             self.set_status("Linked table refresh failed.")
             logger.warning(f"Refresh action failed: {message}")
             QMessageBox.warning(self, "Refresh Failed", f"Could not refresh linked table:\n{message}")
+
+    def open_access_for_signin(self) -> None:
+        if hasattr(self, "manual_access_bridge") and self.manual_access_bridge is not None:
+            QMessageBox.information(self, "Access Open", "Access is already open for sign-in.")
+            return
+
+        try:
+            self.manual_access_bridge = AccessBridge(
+                db_path=self.db_path,
+                linked_table=self.linked_table,
+                temp_table=self.temp_table,
+                macro_name=self.macro_name,
+            )
+            self.manual_access_bridge.open()
+            self.manual_access_bridge.access.Visible = True
+            self.manual_access_bridge.access.UserControl = True
+            self.set_status("Access opened for manual sign-in. Complete sign-in and close Access when done.")
+            QMessageBox.information(
+                self,
+                "Manual Authentication",
+                "Access window opened. Please sign in manually in the Access UI, then use Refresh or Test Connection."
+            )
+        except Exception as exc:
+            logger.exception("Failed to open Access for manual sign-in.")
+            self.set_status("Failed to open Access for manual sign-in.")
+            QMessageBox.warning(self, "Error", f"Could not open Access for sign-in: {exc}")
+
+    def recreate_linked_table(self) -> None:
+        self.set_status("Recreating SharePoint linked table...")
+        self.progress.setVisible(True)
+        self.progress.setRange(0, 0)
+
+        try:
+            with AccessBridge(
+                db_path=self.db_path,
+                linked_table=self.linked_table,
+                temp_table=self.temp_table,
+                macro_name=self.macro_name,
+            ) as bridge:
+                bridge.recreate_linked_table()
+            self.set_status("Linked table recreated.")
+            QMessageBox.information(
+                self,
+                "Recreate Complete",
+                "Linked table was recreated. Please run Refresh Linked Table/Test Connection now."
+            )
+        except Exception as exc:
+            logger.exception("Recreate linked table failed.")
+            self.set_status("Could not recreate linked table.")
+            QMessageBox.warning(self, "Recreate Failed", f"Could not recreate linked table:\n{exc}")
+
+    def closeEvent(self, event):
+        if hasattr(self, "manual_access_bridge") and self.manual_access_bridge is not None:
+            try:
+                self.manual_access_bridge.close()
+            except Exception:
+                pass
+        super().closeEvent(event)
+
+    def closeEvent(self, event):
+        if hasattr(self, "manual_access_bridge") and self.manual_access_bridge is not None:
+            try:
+                self.manual_access_bridge.close()
+            except Exception:
+                pass
+        super().closeEvent(event)
 
         try:
             with AccessBridge(
