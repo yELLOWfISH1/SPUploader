@@ -468,3 +468,117 @@ src.access_bridge.AccessBridgeError: Failed to import Excel file: (-2147352567, 
 2026-03-17 16:46:55,058 [INFO] src.access_bridge: Refreshing linked table: linked_table
 2026-03-17 16:46:55,069 [WARNING] src.access_bridge: Could not refresh linked table: (-2147352567, 'Exception occurred.', (0, 'DAO.TableDef', 'Invalid operation.', 'jeterr40.chm', 5003219, -2146825069), None)
 2026-03-17 16:46:55,071 [INFO] src.access_bridge: Closing Access.
+2026-03-21 19:44:57,581 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:44:59,067 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:44:59,090 [INFO] src.access_bridge: Authentication successful.
+2026-03-21 19:44:59,090 [INFO] src.access_bridge: Refreshing linked table: linked_table
+2026-03-21 19:44:59,096 [WARNING] src.access_bridge: Could not refresh linked table: (-2147352567, 'Exception occurred.', (0, 'DAO.TableDef', 'Invalid operation.', 'jeterr40.chm', 5003219, -2146825069), None)
+2026-03-21 19:44:59,096 [WARNING] src.ui_workers: Linked table refresh during auth worker failed: Could not refresh linked table: (-2147352567, 'Exception occurred.', (0, 'DAO.TableDef', 'Invalid operation.', 'jeterr40.chm', 5003219, -2146825069), None)
+2026-03-21 19:44:59,096 [INFO] src.access_bridge: Closing Access.
+2026-03-21 19:45:09,871 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:45:25,885 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:45:25,952 [INFO] src.access_bridge: Recreating linked table: linked_table
+2026-03-21 19:45:25,978 [INFO] src.access_bridge: Deleted existing linked table definition.
+2026-03-21 19:45:25,993 [ERROR] src.access_bridge: Failed to recreate linked table: (-2147352567, 'Exception occurred.', (0, 'DAO.TableDefs', 'No field defined--cannot append TableDef or Index.', 'jeterr40.chm', 5003264, -2146825024), None)
+2026-03-21 19:45:25,993 [INFO] src.access_bridge: Closing Access.
+2026-03-21 19:45:25,997 [ERROR] root: Recreate linked table failed.
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 115, in recreate_linked_table
+    db.TableDefs.Append(new_def)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "<COMObject <unknown>>", line 2, in Append
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (0, 'DAO.TableDefs', 'No field defined--cannot append TableDef or Index.', 'jeterr40.chm', 5003264, -2146825024), None)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 883, in recreate_linked_table
+    bridge.recreate_linked_table()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 121, in recreate_linked_table
+    raise AccessBridgeError(
+        f"Could not recreate linked table '{self.linked_table}': {e}"
+    ) from e
+src.access_bridge.AccessBridgeError: Could not recreate linked table 'linked_table': (-2147352567, 'Exception occurred.', (0, 'DAO.TableDefs', 'No field defined--cannot append TableDef or Index.', 'jeterr40.chm', 5003264, -2146825024), None)
+2026-03-21 19:48:56,344 [INFO] src.access_bridge: Closing Access.
+2026-03-21 19:48:56,346 [WARNING] src.access_bridge: Error closing Access: Access.Application.Quit
+2026-03-21 19:48:56,346 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:48:57,423 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:48:59,445 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:49:01,451 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:49:03,461 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:49:05,468 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:49:07,478 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:49:09,487 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:49:16,313 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:49:16,322 [ERROR] src.access_bridge: Failed to open Access database: (-2147352567, 'Exception occurred.', (0, None, 'You already have the database open.', None, -1, -2146820421), None)
+2026-03-21 19:49:30,705 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:49:30,712 [ERROR] src.access_bridge: Failed to open Access database: (-2147352567, 'Exception occurred.', (0, None, 'You already have the database open.', None, -1, -2146820421), None)
+2026-03-21 19:49:30,712 [ERROR] root: Linked table refresh failed.
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 45, in open
+    self.access.OpenCurrentDatabase(self.db_path)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "<COMObject Access.Application>", line 2, in OpenCurrentDatabase
+  File "C:\Users\jackw\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\win32com\client\dynamic.py", line 356, in _ApplyTypes_
+    result = self._oleobj_.InvokeTypes(
+        *(dispid, LCID, wFlags, retType, argTypes) + args
+    )
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (0, None, 'You already have the database open.', None, -1, -2146820421), None)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\jackw\Desktop\SPUploader\src\ui_main.py", line 912, in closeEvent
+    with AccessBridge(
+         ~~~~~~~~~~~~^
+        db_path=self.db_path,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        macro_name=self.macro_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as bridge:
+    ^
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 31, in __enter__
+    self.open()
+    ~~~~~~~~~^^
+  File "c:\Users\jackw\Desktop\SPUploader\src\access_bridge.py", line 48, in open
+    raise AccessBridgeError(f"Failed to open database: {e}") from e
+src.access_bridge.AccessBridgeError: Failed to open database: (-2147352567, 'Exception occurred.', (0, None, 'You already have the database open.', None, -1, -2146820421), None)
+2026-03-21 19:49:55,254 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:49:56,352 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:49:59,369 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:02,373 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:05,379 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:08,383 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:11,387 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:14,390 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:17,393 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:20,397 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:23,401 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:26,404 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:29,408 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:32,411 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:32,414 [ERROR] src.access_bridge: Authentication timeout exceeded.
+2026-03-21 19:50:32,415 [WARNING] root: Auth check failed: Authentication did not complete in time. Please ensure you're logged in and try again.
+2026-03-21 19:50:32,415 [INFO] src.access_bridge: Closing Access.
+2026-03-21 19:50:38,616 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:50:39,580 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:42,627 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:45,635 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:48,642 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:51,649 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:54,657 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:50:57,663 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:51:00,670 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:51:03,676 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:51:06,682 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:51:09,687 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:51:12,692 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:51:15,698 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:51:15,700 [ERROR] src.access_bridge: Authentication timeout exceeded.
+2026-03-21 19:51:15,701 [INFO] src.access_bridge: Closing Access.
+2026-03-21 19:52:18,808 [INFO] src.access_bridge: Opening Access DB: C:\Users\jackw\Desktop\SPUploader\output\testDB.accdb
+2026-03-21 19:52:19,825 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:52:21,848 [INFO] src.access_bridge: Checking authentication by opening linked table.
+2026-03-21 19:52:23,858 [INFO] src.access_bridge: Checking authentication by opening linked table.

@@ -64,22 +64,43 @@ class AccessBridge:
         rs = db.OpenRecordset(self.linked_table)
         rs.Close()
 
+    def _parse_sharepoint_site_url(self, connect: str) -> str:
+        """Extract a SharePoint site URL from a WSS connection string."""
+        if not connect:
+            return ""
+
+        for token in connect.split(";"):
+            if token.strip().upper().startswith("DATABASE="):
+                return token.split("=", 1)[1]
+            if token.strip().upper().startswith("SITE="):
+                return token.split("=", 1)[1]
+
+        # fallback when connect is directly a URL
+        if connect.lower().startswith("http"):
+            return connect
+
+        return ""
+
     def _attempt_interactive_signin(self) -> None:
         """Open the linked table in Access UI to prompt for user sign-in."""
         if not self.access:
             return
 
         self.access.Visible = True
+
         try:
-            # Open the linked table in datasheet view to force credential prompt if required.
+            # Open the linked table in datasheet view to force credential prompt if available.
             self.access.DoCmd.OpenTable(self.linked_table, 0, 0)
-            # Optionally close it again.
-            try:
-                self.access.DoCmd.Close(2, self.linked_table)
-            except Exception:
-                pass
+            logger.info("Opened linked table for interactive sign-in attempt.")
         except Exception as e:
-            logger.debug(f"Interactive link open attempt failed: {e}")
+            logger.info(f"OpenTable interactive attempt failed: {e}")
+
+        try:
+            # Offer Linked Table Manager as a fallback — commonly triggers auth flow.
+            self.access.DoCmd.RunCommand(129)
+            logger.info("Opened Linked Table Manager for interactive sign-in attempt.")
+        except Exception as e:
+            logger.debug(f"RunCommand(Linked Table Manager) failed: {e}")
 
     def refresh_linked_table(self) -> None:
         """Attempt to refresh the linked table metadata/connection."""
@@ -94,33 +115,87 @@ class AccessBridge:
             raise AccessBridgeError(f"Could not refresh linked table: {e}") from e
 
     def recreate_linked_table(self) -> None:
-        """Delete and recreate the linked table from existing table definition."""
+        """Delete and recreate the linked SharePoint table with the same connection string."""
         logger.info(f"Recreating linked table: {self.linked_table}")
         db = self.access.CurrentDb()
+
         try:
             existing_def = db.TableDefs(self.linked_table)
-            connect = existing_def.Connect
-            source = existing_def.SourceTableName
-            attrs = existing_def.Attributes
+        except Exception as e:
+            logger.error(f"Linked table '{self.linked_table}' not found: {e}")
+            raise AccessBridgeError(f"Linked table '{self.linked_table}' not found.") from e
 
-            # Remove existing linked table definition
+        connect = getattr(existing_def, "Connect", "")
+        source = getattr(existing_def, "SourceTableName", "")
+        attrs = getattr(existing_def, "Attributes", 0)
+
+        if not connect or not source:
+            raise AccessBridgeError(
+                f"Cannot recreate linked table '{self.linked_table}' because Connect/SourceTableName is missing."
+            )
+
+        # ensure the table is detached before recreating
+        try:
             db.TableDefs.Delete(self.linked_table)
             logger.info("Deleted existing linked table definition.")
+        except Exception as e:
+            logger.warning(f"Could not delete existing linked table definition: {e}")
 
-            # Create a new link using the same connection and source list
+        try:
             new_def = db.CreateTableDef(self.linked_table)
             new_def.Connect = connect
             new_def.SourceTableName = source
+
+            # For linked tables, Attributes should include dbAttachedTable. Add safe default if missing.
+            if not attrs or (attrs & 1024) == 0:
+                attrs = attrs | 1024
             new_def.Attributes = attrs
+
             db.TableDefs.Append(new_def)
+            db.TableDefs.Refresh()
             new_def.RefreshLink()
-            logger.info("Recreated linked table definition.")
+            logger.info("Recreated linked table definition and refreshed link.")
 
         except Exception as e:
-            logger.error(f"Failed to recreate linked table: {e}")
-            raise AccessBridgeError(
-                f"Could not recreate linked table '{self.linked_table}': {e}"
-            ) from e
+            logger.warning(f"TableDefs append/refresh failed: {e}. Trying TransferDatabase fallback.")
+
+            sharepoint_url = self._parse_sharepoint_site_url(connect)
+            logger.info(f"Parsed SharePoint URL from connect string: {sharepoint_url}")
+
+            try:
+                # Fallback: use TransferDatabase to re-link SharePoint if possible.
+                if sharepoint_url:
+                    self.access.DoCmd.TransferDatabase(
+                        1,  # acLink
+                        "WSS",
+                        sharepoint_url,
+                        0,  # acTable
+                        source,
+                        self.linked_table,
+                        False,
+                        False,
+                    )
+                    logger.info("Recreated linked table using TransferDatabase fallback.")
+                elif connect.upper().startswith("WSS") or "SHAREPOINT" in connect.upper():
+                    self.access.DoCmd.TransferDatabase(
+                        1,
+                        "WSS",
+                        connect,
+                        0,
+                        source,
+                        self.linked_table,
+                        False,
+                        False,
+                    )
+                    logger.info("Recreated linked table using TransferDatabase fallback with connection string")
+                else:
+                    raise AccessBridgeError("Cannot determine SharePoint site URL for TransferDatabase fallback.")
+
+            except Exception as fallback_exc:
+                logger.error(f"Recreate linked table fallback also failed: {fallback_exc}")
+                raise AccessBridgeError(
+                    f"Could not recreate linked table '{self.linked_table}': {fallback_exc}"
+                ) from fallback_exc
 
     def ensure_authenticated(self, timeout_seconds: int = 300, poll_interval: int = 5, interactive: bool = False) -> None:
         """
